@@ -126,7 +126,14 @@ export default function TasksPage() {
           team={team}
           defaultAssignee={user.id}
           onClose={() => setOpen(false)}
-          onCreated={(t) => { setTasks((ts) => [t, ...ts]); setOpen(false); }}
+          onCreated={(t) => {
+            setTasks((ts) => [t, ...ts]);
+            setOpen(false);
+            // If user created a task that won't show in current view, switch to "All"
+            if (scope === "me" && t.assignee_id !== user.id) {
+              setScope("all");
+            }
+          }}
         />
       )}
     </>
@@ -194,17 +201,17 @@ function NewTaskModal({
               className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm" />
           </label>
         </div>
-        <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Project</span>
+        <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Project <span className="text-muted-foreground">(for progress tracking)</span></span>
           <select value={projectId} onChange={(e) => setProjectId(e.target.value)}
             className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm">
-            <option value="">— None —</option>
+            <option value="">— No project (won&apos;t count toward any progress) —</option>
             {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
         </label>
-        <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Assignee</span>
+        <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Assignee <span className="text-muted-foreground">(determines whose &ldquo;My Tasks&rdquo; it appears in)</span></span>
           <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)}
             className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm">
-            <option value="">— Unassigned —</option>
+            <option value="">— Unassigned (only shows in &ldquo;All&rdquo;) —</option>
             {team.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
           </select>
         </label>

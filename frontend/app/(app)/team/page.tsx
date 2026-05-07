@@ -4,18 +4,38 @@ import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import { api, type TeamMember } from "@/lib/api";
 import { memberInitials } from "@/lib/format";
+import { useAuth } from "@/lib/auth-context";
 
 export default function TeamPage() {
+  const { user } = useAuth();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     api.listTeam().then(setMembers).finally(() => setLoading(false));
   }, []);
 
+  const isAdmin = user?.role === "admin";
+
+  const changeRole = async (m: TeamMember, role: "admin" | "member") => {
+    setBusyId(m.id); setErr(null);
+    try {
+      const updated = await api.updateMemberRole(m.id, role);
+      setMembers((ms) => ms.map((x) => (x.id === m.id ? { ...x, ...updated } : x)));
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed to update role");
+    } finally { setBusyId(null); }
+  };
+
   return (
     <>
-      <PageHeader title="Team Members" subtitle="Everyone in your workspace." />
+      <PageHeader
+        title="Team Members"
+        subtitle={isAdmin ? "Promote members to admin or revoke admin access." : "Everyone in your workspace."}
+      />
+      {err && <p className="mb-3 text-sm text-destructive">{err}</p>}
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : (
@@ -31,10 +51,19 @@ export default function TeamPage() {
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{m.name}</p>
                 <p className="text-[11px] text-muted-foreground truncate">{m.email}</p>
-                <p className="text-[11px] mt-1">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
+                <p className="text-[11px] mt-1 flex items-center gap-2">
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${m.role === "admin" ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground"}`}>
                     {m.role}
                   </span>
+                  {isAdmin && m.id !== user?.id && (
+                    <button
+                      disabled={busyId === m.id}
+                      onClick={() => changeRole(m, m.role === "admin" ? "member" : "admin")}
+                      className="text-[10px] underline text-muted-foreground hover:text-foreground disabled:opacity-50"
+                    >
+                      {busyId === m.id ? "Saving…" : m.role === "admin" ? "Demote to member" : "Promote to admin"}
+                    </button>
+                  )}
                 </p>
               </div>
               <div className="text-right text-xs text-muted-foreground">
