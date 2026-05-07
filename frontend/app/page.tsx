@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -21,6 +25,13 @@ import {
   Circle,
   Flame,
 } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import {
+  getDisplayName,
+  getInitials,
+  getRoleLabel,
+  getShortName,
+} from "@/lib/user-utils";
 
 const nav = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
