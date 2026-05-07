@@ -135,6 +135,16 @@ export const api = {
     apiFetch<{ activity: Activity[] }>(`/api/activity?limit=${limit}`).then(
       (r) => r.activity
     ),
+  listActivityPage: (params: { limit?: number; before?: string; q?: string; verb?: string } = {}) => {
+    const sp = new URLSearchParams();
+    sp.set("limit", String(params.limit ?? 25));
+    if (params.before) sp.set("before", params.before);
+    if (params.q) sp.set("q", params.q);
+    if (params.verb) sp.set("verb", params.verb);
+    return apiFetch<{ activity: Activity[]; nextCursor: string | null }>(
+      `/api/activity?${sp.toString()}`
+    );
+  },
 
   // Stats
   overview: () =>
