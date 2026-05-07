@@ -13,7 +13,7 @@ Core principles:
 - **Calm over loud.** A milky lavender background, soft cool-blue tints, and faint borders keep visual noise low so task data stays in focus.
 - **Premium feel through depth, not decoration.** Depth is achieved with gentle layered shadows and rounded geometry rather than gradients or illustrations.
 - **Productivity-first density.** Information is dense but breathable: every metric, chart, and list has clear hierarchy and whitespace around it.
-- **Dribbble-quality polish.** Generous corner radii (24–32px), gradient accents on the active state, and subtle hover lifts give the dashboard a finished, designed feel.
+- **Dribbble-quality polish.** Generous corner radii (16–24px), gradient accents on the active state, and subtle hover lifts give the dashboard a finished, designed feel.
 - **Pastel fintech meets productivity LMS.** The palette and rhythm borrow from pastel fintech dashboards; the structure (sidebar + workspace + utility panel) borrows from learning/productivity tools.
 
 ---
@@ -99,8 +99,8 @@ All colors are defined as semantic tokens in `frontend/app/globals.css` using th
 - **Base unit:** Tailwind's 4px scale. Cards use `p-5` / `p-6`; sections separate with `gap-6`; navigation items use `px-3 py-2.5`.
 - **Radius scale:** declared in `globals.css` from `--radius` (`1rem`) up through `--radius-4xl`. The interface leans on the upper end:
   - Pills/buttons: `rounded-full`.
-  - Nav items, chart bars: `rounded-2xl`.
-  - Cards and panels: `rounded-3xl`.
+  - Nav items, chart bars: `rounded-xl`.
+  - Cards and panels: `rounded-2xl`.
 - **Alignment:** flex with `items-center justify-between` is the dominant pattern for header rows of every card, ensuring titles and controls always sit on the same baseline.
 - **Whitespace:** generous outer padding (`px-6 lg:px-10 py-6`) and `mb-8` under the header create the "breathable" rhythm characteristic of premium SaaS dashboards.
 
@@ -109,7 +109,7 @@ All colors are defined as semantic tokens in `frontend/app/globals.css` using th
 ## 6. Component Design Language
 
 ### Cards
-- White surface, `rounded-3xl`, faint border (`border-border/60`), `shadow-card` at rest.
+- White surface, `rounded-2xl`, faint border (`border-border/60`), `shadow-card` at rest.
 - Hover: `-translate-y-0.5` + `shadow-soft` for a subtle lift.
 
 ### Buttons
@@ -132,7 +132,7 @@ All colors are defined as semantic tokens in `frontend/app/globals.css` using th
 - Fill: `bg-[image:var(--gradient-primary)]` matching the brand gradient.
 
 ### Charts
-- **Bar chart**: rounded `rounded-2xl` bars, muted lavender for inactive, gradient + soft shadow for the highlighted day, with a floating value tooltip.
+- **Bar chart**: rounded `rounded-xl` bars, muted lavender for inactive, gradient + soft shadow for the highlighted day, with a floating value tooltip.
 - **Donut**: SVG with a muted background ring and a gradient stroke, center label showing percentage and "completed".
 - **Area chart**: gradient-filled area with a solid primary line for "this week" and a dashed pink line for "last week", plus a focal point dot.
 
@@ -207,7 +207,7 @@ The layout is fully responsive using Tailwind breakpoints:
 The interface enforces a small set of rules that repeat across every component:
 
 1. **Tokens, not literals.** All colors, radii, and shadows come from CSS variables in `globals.css`.
-2. **Three radius tiers.** `rounded-full` for controls and pills, `rounded-2xl` for inner elements (nav items, bars), `rounded-3xl` for outer cards.
+2. **Three radius tiers.** `rounded-full` for controls and pills, `rounded-xl` for inner elements (nav items, bars), `rounded-2xl` for outer cards.
 3. **One gradient.** A single brand gradient is reused for active states, primary fills, progress bars, and the brand mark — never re-invented per component.
 4. **One shadow language.** Two shadows only: `--shadow-card` at rest, `--shadow-soft` on hover/active.
 5. **Pastel chip pairing.** Every category badge pairs a `~0.94` lightness background with a `~0.4` lightness text in the same hue.
