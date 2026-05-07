@@ -182,3 +182,5 @@ frontend/
 - Never commit `backend/.env` or `frontend/.env.local`.
 - Never expose `SUPABASE_SERVICE_ROLE_KEY` in any `NEXT_PUBLIC_*` variable or in client-side code.
 - Rotate `JWT_SECRET` and the Supabase service-role key if either is ever leaked.
+
+readme updated
