@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
 import { api, type Project, type Task, type TeamMember } from "@/lib/api";
 import { formatDateTime, isOverdue, priorityBadge, statusBadge } from "@/lib/format";
@@ -11,6 +12,9 @@ const STATUSES: Task["status"][] = ["todo", "in_progress", "done"];
 
 export default function TasksPage() {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const projectFilter = searchParams.get("project");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
@@ -20,7 +24,12 @@ export default function TasksPage() {
 
   const load = async () => {
     setLoading(true);
-    const params: Record<string, string> = scope === "me" ? { assignee: "me" } : {};
+    const params: Record<string, string> = {};
+    if (projectFilter) {
+      params.project_id = projectFilter;
+    } else if (scope === "me") {
+      params.assignee = "me";
+    }
     const [t, p, m] = await Promise.all([
       api.listTasks(params),
       api.listProjects(),
@@ -32,7 +41,9 @@ export default function TasksPage() {
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [scope]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [scope, projectFilter]);
+
+  const activeProject = projectFilter ? projects.find((p) => p.id === projectFilter) : null;
 
   const grouped = useMemo(() => {
     return STATUSES.map((s) => ({ status: s, items: tasks.filter((t) => t.status === s) }));
@@ -52,18 +63,18 @@ export default function TasksPage() {
   return (
     <>
       <PageHeader
-        title={scope === "me" ? "My Tasks" : "All Tasks"}
-        subtitle="Organize and move work across the workflow."
+        title={activeProject ? `Tasks · ${activeProject.name}` : scope === "me" ? "My Tasks" : "All Tasks"}
+        subtitle={activeProject ? "All tasks for this project, grouped by status." : "Organize and move work across the workflow."}
         action={
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 p-1 rounded-full bg-muted text-xs">
+            {!projectFilter && <div className="flex items-center gap-1 p-1 rounded-full bg-muted text-xs">
               {(["me", "all"] as const).map((s) => (
                 <button key={s} onClick={() => setScope(s)}
                   className={`px-3 py-1.5 rounded-full transition ${scope === s ? "bg-card shadow-[var(--shadow-card)] font-medium" : "text-muted-foreground"}`}>
                   {s === "me" ? "Mine" : "All"}
                 </button>
               ))}
-            </div>
+            </div>}
             <button onClick={() => setOpen(true)}
               className="inline-flex items-center gap-2 h-11 px-4 rounded-full bg-[image:var(--gradient-primary)] text-white text-sm font-medium shadow-[var(--shadow-soft)] hover:opacity-95">
               <Plus className="size-4" /> New task
@@ -71,6 +82,20 @@ export default function TasksPage() {
           </div>
         }
       />
+
+      {projectFilter && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/40 px-4 py-2.5 text-xs">
+          <span className="text-muted-foreground">
+            Filtered by project: <span className="font-medium text-foreground">{activeProject?.name ?? "…"}</span>
+          </span>
+          <button
+            onClick={() => router.push("/tasks")}
+            className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
+          >
+            <X className="size-3.5" /> Clear filter
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>

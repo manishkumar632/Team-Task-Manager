@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Pencil } from "lucide-react";
+import { Plus, Trash2, Pencil, ListChecks } from "lucide-react";
+import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { api, type Project, type TeamMember } from "@/lib/api";
 import { COLOR_OPTIONS, formatDate, memberInitials, tagBg } from "@/lib/format";
@@ -124,6 +125,13 @@ export default function ProjectsPage() {
                 </div>
                 <span className="text-[11px] text-muted-foreground">Due {formatDate(p.due_date)}</span>
               </div>
+
+              <Link
+                href={`/tasks?project=${p.id}`}
+                className="inline-flex items-center justify-center gap-2 h-9 rounded-full border border-border/60 text-xs font-medium text-foreground hover:bg-muted transition"
+              >
+                <ListChecks className="size-3.5" /> View all tasks
+              </Link>
             </div>
             );
           })}
