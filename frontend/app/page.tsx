@@ -97,7 +97,7 @@ export default function Home() {
       {/* Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/60 backdrop-blur border-r border-border/60">
         <div className="flex items-center gap-2 px-2 mb-6">
-          <div className="size-9 rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
+          <div className="size-9 rounded-2xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
             <Sparkles className="size-4" />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default function Home() {
             <a
               key={n.label}
               href="#"
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm transition-all ${
                 n.active
                   ? "bg-[image:var(--gradient-primary)] text-white shadow-[var(--shadow-soft)]"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -124,7 +124,7 @@ export default function Home() {
         </nav>
 
         <div className="mt-auto flex flex-col gap-2">
-          <div className="rounded-xl p-4 bg-[image:var(--gradient-soft)] border border-border/60">
+          <div className="rounded-2xl p-4 bg-[image:var(--gradient-soft)] border border-border/60">
             <p className="text-xs font-medium text-foreground">Upgrade to Pro</p>
             <p className="text-[11px] text-muted-foreground mt-1">
               Unlock workflows, AI summaries, and advanced analytics.
@@ -190,7 +190,7 @@ export default function Home() {
               {taskBuckets.map((b) => (
                 <div
                   key={b.label}
-                  className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
+                  className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full ${b.accent}`}>
@@ -207,7 +207,7 @@ export default function Home() {
 
             {/* Activity chart + sprint */}
             <section className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
-              <div className="rounded-xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
+              <div className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-lg font-semibold">Task activity</h2>
@@ -237,7 +237,7 @@ export default function Home() {
                           </span>
                         )}
                         <div
-                          className={`w-7 rounded-xl transition-all ${
+                          className={`w-7 rounded-2xl transition-all ${
                             i === 3
                               ? "bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
                               : "bg-[oklch(0.94_0.04_285)]"
@@ -252,7 +252,7 @@ export default function Home() {
               </div>
 
               {/* Sprint progress donut */}
-              <div className="rounded-xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
+              <div className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-lg font-semibold">Sprint #24</h2>
                   <span className="text-[11px] px-2 py-1 rounded-full bg-[oklch(0.94_0.07_160)] text-[oklch(0.38_0.13_160)] font-medium">
@@ -288,15 +288,15 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="rounded-xl bg-muted/60 py-2">
+                  <div className="rounded-2xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">42</p>
                     <p className="text-[10px] text-muted-foreground">Done</p>
                   </div>
-                  <div className="rounded-xl bg-muted/60 py-2">
+                  <div className="rounded-2xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">14</p>
                     <p className="text-[10px] text-muted-foreground">Active</p>
                   </div>
-                  <div className="rounded-xl bg-muted/60 py-2">
+                  <div className="rounded-2xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">6</p>
                     <p className="text-[10px] text-muted-foreground">Backlog</p>
                   </div>
@@ -305,7 +305,7 @@ export default function Home() {
             </section>
 
             {/* Workload curve */}
-            <section className="rounded-xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
+            <section className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-lg font-semibold">Team workload</h2>
@@ -362,7 +362,7 @@ export default function Home() {
                 {projects.map((p) => (
                   <div
                     key={p.name}
-                    className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
+                    className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${p.tagBg}`}>{p.tag}</span>
@@ -404,7 +404,7 @@ export default function Home() {
             </section>
 
             {/* Team */}
-            <section className="rounded-xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
+            <section className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="text-lg font-semibold">Your team</h2>
@@ -437,7 +437,7 @@ export default function Home() {
 
           {/* Right panel */}
           <aside className="flex flex-col gap-6">
-            <div className="rounded-xl p-6 bg-[image:var(--gradient-primary)] text-white shadow-[var(--shadow-soft)] relative overflow-hidden">
+            <div className="rounded-2xl p-6 bg-[image:var(--gradient-primary)] text-white shadow-[var(--shadow-soft)] relative overflow-hidden">
               <div className="absolute -right-8 -top-8 size-40 rounded-full bg-white/10 blur-2xl" />
               <p className="text-xs font-medium opacity-80">Today</p>
               <p className="text-3xl font-bold tracking-tight mt-1">12 tasks</p>
@@ -447,7 +447,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
+            <div className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Today&apos;s tasks</h3>
                 <button className="text-muted-foreground hover:text-foreground">
@@ -456,7 +456,7 @@ export default function Home() {
               </div>
               <ul className="flex flex-col gap-3">
                 {todayTasks.map((t) => (
-                  <li key={t.title} className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition">
+                  <li key={t.title} className="flex items-start gap-3 p-3 rounded-2xl bg-muted/50 hover:bg-muted transition">
                     <div className="text-[11px] font-semibold text-primary px-2 py-1 rounded-full bg-[oklch(0.94_0.05_285)] shrink-0">
                       {t.time}
                     </div>
@@ -470,7 +470,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
+            <div className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold">Overdue</h3>
                 <span className="text-[11px] font-medium px-2 py-1 rounded-full bg-[oklch(0.94_0.07_20)] text-[oklch(0.5_0.18_20)]">
@@ -483,8 +483,8 @@ export default function Home() {
                   { t: "QA: payment flow", d: "1 day ago" },
                   { t: "Send sprint report", d: "5 hours ago" },
                 ].map((o) => (
-                  <li key={o.t} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted/60 transition">
-                    <div className="size-8 rounded-xl bg-[oklch(0.94_0.07_20)] grid place-items-center text-[oklch(0.5_0.18_20)]">
+                  <li key={o.t} className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-muted/60 transition">
+                    <div className="size-8 rounded-2xl bg-[oklch(0.94_0.07_20)] grid place-items-center text-[oklch(0.5_0.18_20)]">
                       <Flame className="size-4" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -496,7 +496,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
+            <div className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
               <h3 className="font-semibold mb-4">Recent activity</h3>
               <ul className="flex flex-col gap-4">
                 {updates.map((u, i) => (
@@ -518,25 +518,25 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="rounded-xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
+            <div className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)]">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold">Quick stats</h3>
                 <Settings className="size-4 text-muted-foreground" />
               </div>
               <div className="grid grid-cols-2 gap-3 mt-2">
-                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_285)]">
+                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_285)]">
                   <p className="text-[11px] text-muted-foreground">Velocity</p>
                   <p className="text-lg font-bold mt-0.5">+18%</p>
                 </div>
-                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_230)]">
+                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_230)]">
                   <p className="text-[11px] text-muted-foreground">Focus time</p>
                   <p className="text-lg font-bold mt-0.5">4.2h</p>
                 </div>
-                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_350)]">
+                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_350)]">
                   <p className="text-[11px] text-muted-foreground">Reviews</p>
                   <p className="text-lg font-bold mt-0.5">9</p>
                 </div>
-                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_160)]">
+                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_160)]">
                   <p className="text-[11px] text-muted-foreground">Shipped</p>
                   <p className="text-lg font-bold mt-0.5">27</p>
                 </div>
