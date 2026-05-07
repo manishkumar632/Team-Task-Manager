@@ -1,6 +1,4 @@
-import { apiFetch, getToken } from "./auth-context";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+import { apiFetch } from "./auth-context";
 
 // ─── Types ────────────────────────────────────────────────────────────────
 export type Member = {
@@ -161,10 +159,7 @@ export type CloudinarySignature = {
 };
 
 export async function uploadAvatarToCloudinary(file: File): Promise<string> {
-  const token = getToken();
-  if (!token) throw new Error("Not authenticated");
-
-  // 1. Get signed payload from our backend.
+  // 1. Get signed payload from our backend (auth via HttpOnly cookie via BFF).
   const sig = await apiFetch<CloudinarySignature>(
     "/api/uploads/cloudinary-signature",
     { method: "POST", body: JSON.stringify({}) }
@@ -188,5 +183,3 @@ export async function uploadAvatarToCloudinary(file: File): Promise<string> {
   }
   return data.secure_url as string;
 }
-
-export { API_URL };
