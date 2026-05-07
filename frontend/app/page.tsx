@@ -244,11 +244,16 @@ export default function Home() {
           </button>
           <div className="hidden sm:flex items-center gap-3 pl-3 pr-1 h-11 rounded-full bg-card border border-border/60 shadow-[var(--shadow-card)]">
             <div className="text-right leading-tight">
-              <p className="text-xs font-semibold">Volter A.</p>
-              <p className="text-[10px] text-muted-foreground">Admin</p>
+              <p className="text-xs font-semibold">{shortName}</p>
+              <p className="text-[10px] text-muted-foreground">{roleLabel}</p>
             </div>
-            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)]">
-              VA
+            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)] overflow-hidden">
+              {user.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatar_url} alt={displayName} className="size-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
           </div>
         </header>
