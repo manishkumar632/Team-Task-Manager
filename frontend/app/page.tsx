@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -21,6 +25,13 @@ import {
   Circle,
   Flame,
 } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import {
+  getDisplayName,
+  getInitials,
+  getRoleLabel,
+  getShortName,
+} from "@/lib/user-utils";
 
 const nav = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -116,6 +127,27 @@ const barData = [38, 64, 52, 88, 46, 70, 58];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function Home() {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) router.replace("/login");
+  }, [loading, user, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex flex-1 items-center justify-center min-h-screen text-sm text-muted-foreground">
+        Loading…
+      </div>
+    );
+  }
+
+  const displayName = getDisplayName(user);
+  const shortName = getShortName(user);
+  const initials = getInitials(user.name, user.email);
+  const roleLabel = getRoleLabel(user);
+  const firstName = displayName.split(" ")[0];
+
   return (
     <div className="flex flex-1 min-h-screen bg-[var(--background)] text-foreground font-sans p-4 gap-4">
       {/* Sidebar */}
@@ -160,16 +192,25 @@ export default function Home() {
             </button>
           </div>
           <div className="flex items-center gap-3 px-2 pt-2 border-t border-border/60">
-            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)]">
-              VA
+            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)] overflow-hidden">
+              {user.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatar_url} alt={displayName} className="size-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Manish Mukhiya</p>
-              <p className="text-[11px] text-muted-foreground">
-                Admin · Premium
+              <p className="text-sm font-medium truncate">{displayName}</p>
+              <p className="text-[11px] text-muted-foreground truncate">
+                {roleLabel} · {user.email}
               </p>
             </div>
-            <button className="text-muted-foreground hover:text-foreground">
+            <button
+              onClick={logout}
+              aria-label="Log out"
+              className="text-muted-foreground hover:text-foreground"
+            >
               <LogOut className="size-4" />
             </button>
           </div>
@@ -183,7 +224,7 @@ export default function Home() {
           <div className="flex-1 min-w-0">
             <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Welcome back, Volter — here&apos;s what your team is shipping
+              Welcome back, {firstName} — here&apos;s what your team is shipping
               today.
             </p>
           </div>
@@ -203,11 +244,16 @@ export default function Home() {
           </button>
           <div className="hidden sm:flex items-center gap-3 pl-3 pr-1 h-11 rounded-full bg-card border border-border/60 shadow-[var(--shadow-card)]">
             <div className="text-right leading-tight">
-              <p className="text-xs font-semibold">Volter A.</p>
-              <p className="text-[10px] text-muted-foreground">Admin</p>
+              <p className="text-xs font-semibold">{shortName}</p>
+              <p className="text-[10px] text-muted-foreground">{roleLabel}</p>
             </div>
-            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)]">
-              VA
+            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)] overflow-hidden">
+              {user.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatar_url} alt={displayName} className="size-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
           </div>
         </header>
