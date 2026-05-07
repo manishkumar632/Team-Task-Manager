@@ -406,3 +406,4 @@ RLS is enabled on every table as a defense‑in‑depth measure. The Express API
 - The Supabase `service_role` key is server‑side only. Never put it into a `NEXT_PUBLIC_*` variable, never commit `backend/.env`, never paste it into the browser.
 - `/api/auth/signup` and `/api/auth/login` are rate‑limited (20 requests / 15 min per IP).
 - All mutating endpoints validate input with **Zod** before touching the database.
+
