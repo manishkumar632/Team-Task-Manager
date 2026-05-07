@@ -117,9 +117,9 @@ const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function Home() {
   return (
-    <div className="flex flex-1 min-h-screen bg-[var(--background)] text-foreground font-sans">
+    <div className="flex flex-1 min-h-screen bg-[var(--background)] text-foreground font-sans p-4 gap-4">
       {/* Sidebar */}
-      <aside className="hidden lg:flex sticky top-0 h-screen w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/60 backdrop-blur border-r border-border/60 overflow-y-auto self-start">
+      <aside className="hidden lg:flex sticky top-4 h-[calc(100vh-2rem)] w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/80 backdrop-blur border border-border/60 rounded-3xl shadow-[var(--shadow-soft)] overflow-y-auto self-start">
         <div className="flex items-center gap-2 px-2 mb-6">
           <div className="size-9 rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
             <Sparkles className="size-4" />
