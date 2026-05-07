@@ -38,7 +38,11 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   { name: "Anna Stewart", initials: "AS", color: "bg-[oklch(0.88_0.06_285)]" },
-  { name: "Volter Anderson", initials: "VA", color: "bg-[oklch(0.88_0.05_230)]" },
+  {
+    name: "Manish Mukhiya",
+    initials: "VA",
+    color: "bg-[oklch(0.88_0.05_230)]",
+  },
   { name: "Alice Miller", initials: "AM", color: "bg-[oklch(0.88_0.06_350)]" },
   { name: "Monica Peters", initials: "MP", color: "bg-[oklch(0.88_0.06_160)]" },
   { name: "Liam Carter", initials: "LC", color: "bg-[oklch(0.88_0.06_75)]" },
@@ -88,10 +92,30 @@ export type TaskBucket = {
 };
 
 export const taskBuckets: TaskBucket[] = [
-  { label: "To Do", count: 14, accent: "bg-[oklch(0.94_0.05_230)] text-[oklch(0.4_0.15_230)]", icon: Circle },
-  { label: "In Progress", count: 8, accent: "bg-[oklch(0.94_0.06_285)] text-[oklch(0.4_0.18_285)]", icon: Activity },
-  { label: "Done", count: 27, accent: "bg-[oklch(0.94_0.07_160)] text-[oklch(0.38_0.13_160)]", icon: CheckCircle2 },
-  { label: "Overdue", count: 3, accent: "bg-[oklch(0.94_0.07_20)] text-[oklch(0.5_0.18_20)]", icon: Flame },
+  {
+    label: "To Do",
+    count: 14,
+    accent: "bg-[oklch(0.94_0.05_230)] text-[oklch(0.4_0.15_230)]",
+    icon: Circle,
+  },
+  {
+    label: "In Progress",
+    count: 8,
+    accent: "bg-[oklch(0.94_0.06_285)] text-[oklch(0.4_0.18_285)]",
+    icon: Activity,
+  },
+  {
+    label: "Done",
+    count: 27,
+    accent: "bg-[oklch(0.94_0.07_160)] text-[oklch(0.38_0.13_160)]",
+    icon: CheckCircle2,
+  },
+  {
+    label: "Overdue",
+    count: 3,
+    accent: "bg-[oklch(0.94_0.07_20)] text-[oklch(0.5_0.18_20)]",
+    icon: Flame,
+  },
 ];
 
 export type TodayTask = { time: string; title: string; tag: string };
@@ -120,7 +144,7 @@ export const barData = [38, 64, 52, 88, 46, 70, 58];
 export const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const currentUser = {
-  name: "Volter Anderson",
+  name: "Manish Mukhiya",
   short: "Volter A.",
   initials: "VA",
   role: "Admin",

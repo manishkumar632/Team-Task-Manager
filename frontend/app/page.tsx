@@ -35,7 +35,11 @@ const nav = [
 
 const team = [
   { name: "Anna Stewart", initials: "AS", color: "bg-[oklch(0.88_0.06_285)]" },
-  { name: "Volter Anderson", initials: "VA", color: "bg-[oklch(0.88_0.05_230)]" },
+  {
+    name: "Manish Mukhiya",
+    initials: "VA",
+    color: "bg-[oklch(0.88_0.05_230)]",
+  },
   { name: "Alice Miller", initials: "AM", color: "bg-[oklch(0.88_0.06_350)]" },
   { name: "Monica Peters", initials: "MP", color: "bg-[oklch(0.88_0.06_160)]" },
   { name: "Liam Carter", initials: "LC", color: "bg-[oklch(0.88_0.06_75)]" },
@@ -69,10 +73,30 @@ const projects = [
 ];
 
 const taskBuckets = [
-  { label: "To Do", count: 14, accent: "bg-[oklch(0.94_0.05_230)] text-[oklch(0.4_0.15_230)]", icon: Circle },
-  { label: "In Progress", count: 8, accent: "bg-[oklch(0.94_0.06_285)] text-[oklch(0.4_0.18_285)]", icon: Activity },
-  { label: "Done", count: 27, accent: "bg-[oklch(0.94_0.07_160)] text-[oklch(0.38_0.13_160)]", icon: CheckCircle2 },
-  { label: "Overdue", count: 3, accent: "bg-[oklch(0.94_0.07_20)] text-[oklch(0.5_0.18_20)]", icon: Flame },
+  {
+    label: "To Do",
+    count: 14,
+    accent: "bg-[oklch(0.94_0.05_230)] text-[oklch(0.4_0.15_230)]",
+    icon: Circle,
+  },
+  {
+    label: "In Progress",
+    count: 8,
+    accent: "bg-[oklch(0.94_0.06_285)] text-[oklch(0.4_0.18_285)]",
+    icon: Activity,
+  },
+  {
+    label: "Done",
+    count: 27,
+    accent: "bg-[oklch(0.94_0.07_160)] text-[oklch(0.38_0.13_160)]",
+    icon: CheckCircle2,
+  },
+  {
+    label: "Overdue",
+    count: 3,
+    accent: "bg-[oklch(0.94_0.07_20)] text-[oklch(0.5_0.18_20)]",
+    icon: Flame,
+  },
 ];
 
 const todayTasks = [
@@ -125,7 +149,9 @@ export default function Home() {
 
         <div className="mt-auto flex flex-col gap-2">
           <div className="rounded-2xl p-4 bg-[image:var(--gradient-soft)] border border-border/60">
-            <p className="text-xs font-medium text-foreground">Upgrade to Pro</p>
+            <p className="text-xs font-medium text-foreground">
+              Upgrade to Pro
+            </p>
             <p className="text-[11px] text-muted-foreground mt-1">
               Unlock workflows, AI summaries, and advanced analytics.
             </p>
@@ -138,8 +164,10 @@ export default function Home() {
               VA
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Volter Anderson</p>
-              <p className="text-[11px] text-muted-foreground">Admin · Premium</p>
+              <p className="text-sm font-medium truncate">Manish Mukhiya</p>
+              <p className="text-[11px] text-muted-foreground">
+                Admin · Premium
+              </p>
             </div>
             <button className="text-muted-foreground hover:text-foreground">
               <LogOut className="size-4" />
@@ -155,7 +183,8 @@ export default function Home() {
           <div className="flex-1 min-w-0">
             <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Welcome back, Volter — here&apos;s what your team is shipping today.
+              Welcome back, Volter — here&apos;s what your team is shipping
+              today.
             </p>
           </div>
           <div className="hidden md:flex items-center gap-2 px-4 h-11 w-72 rounded-full bg-card border border-border/60 shadow-[var(--shadow-card)]">
@@ -193,14 +222,20 @@ export default function Home() {
                   className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
                 >
                   <div className="flex items-center justify-between">
-                    <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full ${b.accent}`}>
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full ${b.accent}`}
+                    >
                       <b.icon className="size-3" />
                       {b.label}
                     </span>
                     <MoreHorizontal className="size-4 text-muted-foreground" />
                   </div>
-                  <p className="mt-4 text-3xl font-bold tracking-tight">{b.count}</p>
-                  <p className="text-xs text-muted-foreground mt-1">tasks this sprint</p>
+                  <p className="mt-4 text-3xl font-bold tracking-tight">
+                    {b.count}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    tasks this sprint
+                  </p>
                 </div>
               ))}
             </section>
@@ -211,14 +246,18 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-lg font-semibold">Task activity</h2>
-                    <p className="text-xs text-muted-foreground">Completed vs created this week</p>
+                    <p className="text-xs text-muted-foreground">
+                      Completed vs created this week
+                    </p>
                   </div>
                   <div className="flex items-center gap-1 p-1 rounded-full bg-muted text-xs">
                     {["Week", "Month", "Quarter"].map((t, i) => (
                       <button
                         key={t}
                         className={`px-3 py-1.5 rounded-full transition ${
-                          i === 0 ? "bg-card shadow-[var(--shadow-card)] font-medium" : "text-muted-foreground"
+                          i === 0
+                            ? "bg-card shadow-[var(--shadow-card)] font-medium"
+                            : "text-muted-foreground"
                         }`}
                       >
                         {t}
@@ -229,7 +268,10 @@ export default function Home() {
 
                 <div className="flex items-end justify-between gap-4 h-48">
                   {barData.map((v, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                    <div
+                      key={i}
+                      className="flex-1 flex flex-col items-center gap-2"
+                    >
                       <div className="relative w-full flex justify-center">
                         {i === 3 && (
                           <span className="absolute -top-7 text-[11px] font-semibold px-2 py-1 rounded-full bg-foreground text-background">
@@ -245,7 +287,9 @@ export default function Home() {
                           style={{ height: `${v * 1.6}px` }}
                         />
                       </div>
-                      <span className="text-[11px] text-muted-foreground">{days[i]}</span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {days[i]}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -259,11 +303,20 @@ export default function Home() {
                     On track
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">May 6 — May 20 · 14 days</p>
+                <p className="text-xs text-muted-foreground">
+                  May 6 — May 20 · 14 days
+                </p>
 
                 <div className="relative grid place-items-center my-5">
                   <svg viewBox="0 0 120 120" className="size-40 -rotate-90">
-                    <circle cx="60" cy="60" r="50" stroke="oklch(0.94 0.04 285)" strokeWidth="12" fill="none" />
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="50"
+                      stroke="oklch(0.94 0.04 285)"
+                      strokeWidth="12"
+                      fill="none"
+                    />
                     <circle
                       cx="60"
                       cy="60"
@@ -283,7 +336,9 @@ export default function Home() {
                   </svg>
                   <div className="absolute text-center">
                     <p className="text-3xl font-bold tracking-tight">68%</p>
-                    <p className="text-[11px] text-muted-foreground">completed</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      completed
+                    </p>
                   </div>
                 </div>
 
@@ -309,14 +364,18 @@ export default function Home() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-lg font-semibold">Team workload</h2>
-                  <p className="text-xs text-muted-foreground">Avg hours logged per day</p>
+                  <p className="text-xs text-muted-foreground">
+                    Avg hours logged per day
+                  </p>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="size-2 rounded-full bg-primary" /> This week
+                    <span className="size-2 rounded-full bg-primary" /> This
+                    week
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="size-2 rounded-full bg-[oklch(0.85_0.08_350)]" /> Last week
+                    <span className="size-2 rounded-full bg-[oklch(0.85_0.08_350)]" />{" "}
+                    Last week
                   </span>
                 </div>
               </div>
@@ -346,7 +405,14 @@ export default function Home() {
                   strokeDasharray="4 6"
                   strokeLinecap="round"
                 />
-                <circle cx="220" cy="80" r="6" fill="white" stroke="oklch(0.62 0.2 285)" strokeWidth="3" />
+                <circle
+                  cx="220"
+                  cy="80"
+                  r="6"
+                  fill="white"
+                  stroke="oklch(0.62 0.2 285)"
+                  strokeWidth="3"
+                />
               </svg>
             </section>
 
@@ -365,7 +431,11 @@ export default function Home() {
                     className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${p.tagBg}`}>{p.tag}</span>
+                      <span
+                        className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${p.tagBg}`}
+                      >
+                        {p.tag}
+                      </span>
                       <button className="text-muted-foreground hover:text-foreground">
                         <MoreHorizontal className="size-4" />
                       </button>
@@ -408,7 +478,9 @@ export default function Home() {
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h2 className="text-lg font-semibold">Your team</h2>
-                  <p className="text-xs text-muted-foreground">5 collaborators online now</p>
+                  <p className="text-xs text-muted-foreground">
+                    5 collaborators online now
+                  </p>
                 </div>
                 <button className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:opacity-80">
                   Invite <ArrowUpRight className="size-4" />
@@ -416,7 +488,10 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-6 overflow-x-auto pb-1">
                 {team.map((t) => (
-                  <div key={t.name} className="flex flex-col items-center gap-2 shrink-0">
+                  <div
+                    key={t.name}
+                    className="flex flex-col items-center gap-2 shrink-0"
+                  >
                     <div className="relative">
                       <div
                         className={`size-14 rounded-full grid place-items-center text-sm font-semibold text-[oklch(0.3_0.1_285)] ${t.color}`}
@@ -425,7 +500,9 @@ export default function Home() {
                       </div>
                       <span className="absolute bottom-0 right-0 size-3.5 rounded-full bg-[oklch(0.78_0.13_160)] ring-2 ring-card" />
                     </div>
-                    <p className="text-xs font-medium">{t.name.split(" ")[0]}</p>
+                    <p className="text-xs font-medium">
+                      {t.name.split(" ")[0]}
+                    </p>
                   </div>
                 ))}
                 <button className="size-14 rounded-full border-2 border-dashed border-border grid place-items-center text-muted-foreground hover:text-primary hover:border-primary transition shrink-0">
@@ -456,13 +533,20 @@ export default function Home() {
               </div>
               <ul className="flex flex-col gap-3">
                 {todayTasks.map((t) => (
-                  <li key={t.title} className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition">
+                  <li
+                    key={t.title}
+                    className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition"
+                  >
                     <div className="text-[11px] font-semibold text-primary px-2 py-1 rounded-full bg-[oklch(0.94_0.05_285)] shrink-0">
                       {t.time}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium leading-snug">{t.title}</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">{t.tag}</p>
+                      <p className="text-sm font-medium leading-snug">
+                        {t.title}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        {t.tag}
+                      </p>
                     </div>
                     <Circle className="size-4 text-muted-foreground mt-1" />
                   </li>
@@ -483,7 +567,10 @@ export default function Home() {
                   { t: "QA: payment flow", d: "1 day ago" },
                   { t: "Send sprint report", d: "5 hours ago" },
                 ].map((o) => (
-                  <li key={o.t} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted/60 transition">
+                  <li
+                    key={o.t}
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted/60 transition"
+                  >
                     <div className="size-8 rounded-xl bg-[oklch(0.94_0.07_20)] grid place-items-center text-[oklch(0.5_0.18_20)]">
                       <Flame className="size-4" />
                     </div>
@@ -529,7 +616,9 @@ export default function Home() {
                   <p className="text-lg font-bold mt-0.5">+18%</p>
                 </div>
                 <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_230)]">
-                  <p className="text-[11px] text-muted-foreground">Focus time</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Focus time
+                  </p>
                   <p className="text-lg font-bold mt-0.5">4.2h</p>
                 </div>
                 <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_350)]">
