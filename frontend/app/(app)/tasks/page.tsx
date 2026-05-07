@@ -112,6 +112,14 @@ export default function TasksPage() {
                         {STATUSES.map((s) => <option key={s} value={s}>{statusBadge(s).label}</option>)}
                       </select>
                     </div>
+                    {t.creator && (
+                      <p className="text-[11px] text-muted-foreground truncate">
+                        Assigned by{" "}
+                        <span className="font-medium text-foreground">
+                          {t.creator.id === t.assignee?.id ? "themselves" : t.creator.name}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
