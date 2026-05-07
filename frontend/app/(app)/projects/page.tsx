@@ -125,7 +125,8 @@ export default function ProjectsPage() {
                 <span className="text-[11px] text-muted-foreground">Due {formatDate(p.due_date)}</span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
