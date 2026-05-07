@@ -97,7 +97,7 @@ export default function Home() {
       {/* Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/60 backdrop-blur border-r border-border/60">
         <div className="flex items-center gap-2 px-2 mb-6">
-          <div className="size-9 rounded-2xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
+          <div className="size-9 rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
             <Sparkles className="size-4" />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default function Home() {
             <a
               key={n.label}
               href="#"
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm transition-all ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
                 n.active
                   ? "bg-[image:var(--gradient-primary)] text-white shadow-[var(--shadow-soft)]"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -237,7 +237,7 @@ export default function Home() {
                           </span>
                         )}
                         <div
-                          className={`w-7 rounded-2xl transition-all ${
+                          className={`w-7 rounded-xl transition-all ${
                             i === 3
                               ? "bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
                               : "bg-[oklch(0.94_0.04_285)]"
@@ -288,15 +288,15 @@ export default function Home() {
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="rounded-2xl bg-muted/60 py-2">
+                  <div className="rounded-xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">42</p>
                     <p className="text-[10px] text-muted-foreground">Done</p>
                   </div>
-                  <div className="rounded-2xl bg-muted/60 py-2">
+                  <div className="rounded-xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">14</p>
                     <p className="text-[10px] text-muted-foreground">Active</p>
                   </div>
-                  <div className="rounded-2xl bg-muted/60 py-2">
+                  <div className="rounded-xl bg-muted/60 py-2">
                     <p className="text-sm font-semibold">6</p>
                     <p className="text-[10px] text-muted-foreground">Backlog</p>
                   </div>
@@ -456,7 +456,7 @@ export default function Home() {
               </div>
               <ul className="flex flex-col gap-3">
                 {todayTasks.map((t) => (
-                  <li key={t.title} className="flex items-start gap-3 p-3 rounded-2xl bg-muted/50 hover:bg-muted transition">
+                  <li key={t.title} className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition">
                     <div className="text-[11px] font-semibold text-primary px-2 py-1 rounded-full bg-[oklch(0.94_0.05_285)] shrink-0">
                       {t.time}
                     </div>
@@ -483,8 +483,8 @@ export default function Home() {
                   { t: "QA: payment flow", d: "1 day ago" },
                   { t: "Send sprint report", d: "5 hours ago" },
                 ].map((o) => (
-                  <li key={o.t} className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-muted/60 transition">
-                    <div className="size-8 rounded-2xl bg-[oklch(0.94_0.07_20)] grid place-items-center text-[oklch(0.5_0.18_20)]">
+                  <li key={o.t} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted/60 transition">
+                    <div className="size-8 rounded-xl bg-[oklch(0.94_0.07_20)] grid place-items-center text-[oklch(0.5_0.18_20)]">
                       <Flame className="size-4" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -524,19 +524,19 @@ export default function Home() {
                 <Settings className="size-4 text-muted-foreground" />
               </div>
               <div className="grid grid-cols-2 gap-3 mt-2">
-                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_285)]">
+                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_285)]">
                   <p className="text-[11px] text-muted-foreground">Velocity</p>
                   <p className="text-lg font-bold mt-0.5">+18%</p>
                 </div>
-                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_230)]">
+                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_230)]">
                   <p className="text-[11px] text-muted-foreground">Focus time</p>
                   <p className="text-lg font-bold mt-0.5">4.2h</p>
                 </div>
-                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_350)]">
+                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_350)]">
                   <p className="text-[11px] text-muted-foreground">Reviews</p>
                   <p className="text-lg font-bold mt-0.5">9</p>
                 </div>
-                <div className="rounded-2xl p-3 bg-[oklch(0.96_0.03_160)]">
+                <div className="rounded-xl p-3 bg-[oklch(0.96_0.03_160)]">
                   <p className="text-[11px] text-muted-foreground">Shipped</p>
                   <p className="text-lg font-bold mt-0.5">27</p>
                 </div>
