@@ -127,6 +127,27 @@ const barData = [38, 64, 52, 88, 46, 70, 58];
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function Home() {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) router.replace("/login");
+  }, [loading, user, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex flex-1 items-center justify-center min-h-screen text-sm text-muted-foreground">
+        Loading…
+      </div>
+    );
+  }
+
+  const displayName = getDisplayName(user);
+  const shortName = getShortName(user);
+  const initials = getInitials(user.name, user.email);
+  const roleLabel = getRoleLabel(user);
+  const firstName = displayName.split(" ")[0];
+
   return (
     <div className="flex flex-1 min-h-screen bg-[var(--background)] text-foreground font-sans p-4 gap-4">
       {/* Sidebar */}
