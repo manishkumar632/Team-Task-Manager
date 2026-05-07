@@ -3,3 +3,5 @@ dist/
 build/
 .next/
 out/
+.env
+.env.local
