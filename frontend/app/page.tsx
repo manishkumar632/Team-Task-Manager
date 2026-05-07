@@ -177,7 +177,7 @@ export default function Home() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 min-w-0 px-6 lg:px-10 py-6">
+      <main className="flex-1 min-w-0 px-2 lg:px-6 py-2">
         {/* Header */}
         <header className="flex items-center gap-4 mb-8">
           <div className="flex-1 min-w-0">
