@@ -140,6 +140,20 @@ export default function ProjectsPage() {
           }}
         />
       )}
+
+      {editing && (
+        <EditProjectModal
+          project={editing}
+          team={team}
+          onClose={() => setEditing(null)}
+          onSaved={(updated) => {
+            setProjects((ps) => ps.map((p) => (p.id === updated.id ? { ...p, ...updated } : p)));
+            setEditing(null);
+            // re-fetch to refresh members list
+            api.listProjects().then(setProjects).catch(() => {});
+          }}
+        />
+      )}
     </>
   );
 }
