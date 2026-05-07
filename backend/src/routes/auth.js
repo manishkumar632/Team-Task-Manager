@@ -53,7 +53,7 @@ router.post("/signup", authLimiter, async (req, res) => {
   }
   const { email, password, name } = parsed.data;
 
-  const { data: existing, error: lookupErr } = await supabase
+  const { data: existing, error: lookupErr } = await supabase()
     .from("profiles")
     .select("id")
     .eq("email", email)
@@ -63,7 +63,7 @@ router.post("/signup", authLimiter, async (req, res) => {
 
   const password_hash = await bcrypt.hash(password, 10);
 
-  const { data: created, error: insertErr } = await supabase
+  const { data: created, error: insertErr } = await supabase()
     .from("profiles")
     .insert({ email, password_hash, name, role: "member" })
     .select("*")
@@ -85,7 +85,7 @@ router.post("/login", authLimiter, async (req, res) => {
   }
   const { email, password } = parsed.data;
 
-  const { data: profile, error } = await supabase
+  const { data: profile, error } = await supabase()
     .from("profiles")
     .select("*")
     .eq("email", email)
@@ -102,7 +102,7 @@ router.post("/login", authLimiter, async (req, res) => {
 
 // GET /api/auth/me
 router.get("/me", requireAuth, async (req, res) => {
-  const { data: profile, error } = await supabase
+  const { data: profile, error } = await supabase()
     .from("profiles")
     .select("*")
     .eq("id", req.user.id)
