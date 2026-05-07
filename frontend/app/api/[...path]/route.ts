@@ -68,6 +68,13 @@ async function forward(req: NextRequest, pathParts: string[]) {
   const isLogin = path === "/auth/login" || path === "/auth/signup";
   const isLogout = path === "/auth/logout";
 
+  // Logout is handled entirely by the BFF: clear cookie, no backend call.
+  if (isLogout) {
+    const headers = new Headers({ "content-type": "application/json" });
+    headers.append("set-cookie", buildCookie("", 0));
+    return new NextResponse(JSON.stringify({ ok: true }), { status: 200, headers });
+  }
+
   let responseBody: string = text;
 
   if (isLogin && upstream.ok) {
@@ -79,10 +86,6 @@ async function forward(req: NextRequest, pathParts: string[]) {
         responseBody = JSON.stringify(rest);
       }
     } catch {}
-  }
-
-  if (isLogout) {
-    resHeaders.append("set-cookie", buildCookie("", 0));
   }
 
   return new NextResponse(responseBody, {
