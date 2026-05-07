@@ -193,12 +193,12 @@ export default function DashboardPage() {
 
         {/* Right column: activity */}
         <aside className="flex flex-col gap-6 min-w-0">
-          <section className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)]">
-            <h2 className="text-lg font-semibold mb-4">Live updates</h2>
+          <section className="rounded-2xl bg-card border border-border/60 p-6 shadow-[var(--shadow-card)] flex flex-col max-h-[600px]">
+            <h2 className="text-lg font-semibold mb-4 shrink-0">Live updates</h2>
             {activity.length === 0 ? (
               <p className="text-sm text-muted-foreground">No activity yet.</p>
             ) : (
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-3 overflow-y-auto pr-2 thin-scrollbar">
                 {activity.map((a) => (
                   <li key={a.id} className="flex items-start gap-3">
                     <div className="size-8 rounded-full bg-[oklch(0.92_0.04_285)] grid place-items-center text-[10px] font-semibold text-[oklch(0.35_0.15_285)] overflow-hidden shrink-0">
