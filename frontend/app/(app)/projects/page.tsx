@@ -268,3 +268,102 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
+
+function EditProjectModal({
+  project, team, onClose, onSaved,
+}: {
+  project: Project;
+  team: TeamMember[];
+  onClose: () => void;
+  onSaved: (p: Project) => void;
+}) {
+  const [name, setName] = useState(project.name);
+  const [tag, setTag] = useState(project.tag);
+  const [color, setColor] = useState<(typeof COLOR_OPTIONS)[number]>(
+    (COLOR_OPTIONS as readonly string[]).includes(project.color)
+      ? (project.color as (typeof COLOR_OPTIONS)[number])
+      : "violet"
+  );
+  const [due, setDue] = useState(project.due_date ?? "");
+  const [memberIds, setMemberIds] = useState<string[]>(
+    project.members.filter((m) => m.id !== project.owner_id).map((m) => m.id)
+  );
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true); setErr(null);
+    try {
+      const updated = await api.updateProject(project.id, {
+        name, tag, color,
+        due_date: due || null,
+        member_ids: memberIds,
+      });
+      onSaved(updated);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed to update project");
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/30 backdrop-blur-sm p-4" onClick={onClose}>
+      <form onClick={(e) => e.stopPropagation()} onSubmit={submit}
+        className="w-full max-w-md rounded-3xl bg-card border border-border/60 p-6 shadow-[var(--shadow-soft)] flex flex-col gap-4">
+        <h2 className="text-lg font-semibold">Edit project</h2>
+
+        <Field label="Name">
+          <input value={name} onChange={(e) => setName(e.target.value)} required maxLength={120}
+            className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm outline-none focus:border-ring" />
+        </Field>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Tag">
+            <input value={tag} onChange={(e) => setTag(e.target.value)} maxLength={40}
+              className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm outline-none focus:border-ring" />
+          </Field>
+          <Field label="Due date">
+            <input type="date" value={due} onChange={(e) => setDue(e.target.value)}
+              className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm outline-none focus:border-ring" />
+          </Field>
+        </div>
+
+        <Field label="Color">
+          <div className="flex gap-2">
+            {COLOR_OPTIONS.map((c) => (
+              <button type="button" key={c} onClick={() => setColor(c)}
+                className={`text-[11px] px-3 py-1.5 rounded-full ${tagBg(c)} ${color === c ? "ring-2 ring-ring" : ""}`}>
+                {c}
+              </button>
+            ))}
+          </div>
+        </Field>
+
+        <Field label="Members (owner is always included)">
+          <div className="flex flex-wrap gap-2 max-h-40 overflow-auto">
+            {team.map((m) => {
+              const isOwner = m.id === project.owner_id;
+              const on = isOwner || memberIds.includes(m.id);
+              return (
+                <button type="button" key={m.id} disabled={isOwner}
+                  onClick={() => setMemberIds((ids) => on ? ids.filter((i) => i !== m.id) : [...ids, m.id])}
+                  className={`text-xs px-3 py-1.5 rounded-full border ${on ? "bg-primary text-primary-foreground border-primary" : "border-border/60 text-muted-foreground"} ${isOwner ? "opacity-70 cursor-not-allowed" : ""}`}>
+                  {m.name}{isOwner ? " (owner)" : ""}
+                </button>
+              );
+            })}
+          </div>
+        </Field>
+
+        {err && <p className="text-xs text-destructive">{err}</p>}
+        <div className="flex justify-end gap-2 pt-2">
+          <button type="button" onClick={onClose} className="h-10 px-4 rounded-full text-sm text-muted-foreground hover:bg-muted">Cancel</button>
+          <button disabled={busy || !name} type="submit"
+            className="h-10 px-5 rounded-full bg-[image:var(--gradient-primary)] text-white text-sm font-medium disabled:opacity-50">
+            {busy ? "Saving…" : "Save"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
