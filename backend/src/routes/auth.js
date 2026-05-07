@@ -26,6 +26,12 @@ const loginSchema = z.object({
   password: z.string().min(1).max(72),
 });
 
+const updateMeSchema = z.object({
+  name: z.string().trim().min(1).max(80).optional(),
+  avatar_url: z.string().trim().url().max(500).nullable().optional(),
+  plan: z.enum(["free", "pro", "premium"]).optional(),
+});
+
 function signToken(profile) {
   return jwt.sign(
     { sub: profile.id, email: profile.email, role: profile.role },
@@ -40,6 +46,7 @@ function publicProfile(p) {
     email: p.email,
     name: p.name,
     role: p.role,
+    plan: p.plan || "free",
     avatar_url: p.avatar_url,
     created_at: p.created_at,
   };
@@ -110,6 +117,30 @@ router.get("/me", requireAuth, async (req, res) => {
   if (error) return res.status(500).json({ error: "Database error" });
   if (!profile) return res.status(404).json({ error: "User not found" });
   return res.json({ user: publicProfile(profile) });
+});
+
+// PATCH /api/auth/me — update own profile
+router.patch("/me", requireAuth, async (req, res) => {
+  const parsed = updateMeSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.issues[0]?.message || "Invalid input" });
+  }
+  const patch = { ...parsed.data, updated_at: new Date().toISOString() };
+  if (Object.keys(parsed.data).length === 0) {
+    return res.status(400).json({ error: "Nothing to update" });
+  }
+
+  const { data: updated, error } = await supabase()
+    .from("profiles")
+    .update(patch)
+    .eq("id", req.user.id)
+    .select("*")
+    .single();
+  if (error || !updated) {
+    console.error("[updateMe] error", error);
+    return res.status(500).json({ error: "Could not update profile" });
+  }
+  return res.json({ user: publicProfile(updated) });
 });
 
 module.exports = router;
