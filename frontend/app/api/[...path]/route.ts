@@ -33,6 +33,13 @@ async function forward(req: NextRequest, pathParts: string[]) {
   const search = req.nextUrl.search || "";
   const target = `${BACKEND_URL}/api${path}${search}`;
 
+  // Logout is handled entirely by the BFF: clear cookie, no backend call.
+  if (path === "/auth/logout") {
+    const h = new Headers({ "content-type": "application/json" });
+    h.append("set-cookie", buildCookie("", 0));
+    return new NextResponse(JSON.stringify({ ok: true }), { status: 200, headers: h });
+  }
+
   const cookieStore = await cookies();
   const token = cookieStore.get(AUTH_COOKIE)?.value;
 
@@ -66,14 +73,6 @@ async function forward(req: NextRequest, pathParts: string[]) {
   if (upstreamCt) resHeaders.set("content-type", upstreamCt);
 
   const isLogin = path === "/auth/login" || path === "/auth/signup";
-  const isLogout = path === "/auth/logout";
-
-  // Logout is handled entirely by the BFF: clear cookie, no backend call.
-  if (isLogout) {
-    const headers = new Headers({ "content-type": "application/json" });
-    headers.append("set-cookie", buildCookie("", 0));
-    return new NextResponse(JSON.stringify({ ok: true }), { status: 200, headers });
-  }
 
   let responseBody: string = text;
 
