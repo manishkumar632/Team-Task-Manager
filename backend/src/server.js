@@ -2,6 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
+const projectsRoutes = require("./routes/projects");
+const tasksRoutes = require("./routes/tasks");
+const teamRoutes = require("./routes/team");
+const activityRoutes = require("./routes/activity");
+const statsRoutes = require("./routes/stats");
+const uploadsRoutes = require("./routes/uploads");
 
 const app = express();
 
@@ -16,6 +22,12 @@ app.use(
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectsRoutes);
+app.use("/api/tasks", tasksRoutes);
+app.use("/api/team", teamRoutes);
+app.use("/api/activity", activityRoutes);
+app.use("/api/stats", statsRoutes);
+app.use("/api/uploads", uploadsRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error("[server] unhandled", err);
