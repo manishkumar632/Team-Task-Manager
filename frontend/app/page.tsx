@@ -95,7 +95,7 @@ export default function Home() {
   return (
     <div className="flex flex-1 min-h-screen bg-[var(--background)] text-foreground font-sans">
       {/* Sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/60 backdrop-blur border-r border-border/60">
+      <aside className="hidden lg:flex sticky top-0 h-screen w-64 shrink-0 flex-col gap-2 px-5 py-6 bg-card/60 backdrop-blur border-r border-border/60 overflow-y-auto self-start">
         <div className="flex items-center gap-2 px-2 mb-6">
           <div className="size-9 rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)] grid place-items-center text-white">
             <Sparkles className="size-4" />
