@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Pencil } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { api, type Project, type TeamMember } from "@/lib/api";
 import { COLOR_OPTIONS, formatDate, memberInitials, tagBg } from "@/lib/format";
+import { useAuth } from "@/lib/auth-context";
 
 export default function ProjectsPage() {
+  const { user } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,7 +61,9 @@ export default function ProjectsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {projects.map((p) => (
+          {projects.map((p) => {
+            const canManage = !!user && (user.role === "admin" || user.id === p.owner_id);
+            return (
             <div key={p.id} className="rounded-2xl bg-card border border-border/60 p-5 shadow-[var(--shadow-card)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] transition flex flex-col gap-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -67,13 +72,28 @@ export default function ProjectsPage() {
                   </span>
                   <h3 className="mt-2 font-semibold tracking-tight">{p.name}</h3>
                 </div>
-                <button
-                  onClick={() => onDelete(p.id)}
-                  className="text-muted-foreground hover:text-destructive p-1"
-                  aria-label="Delete project"
-                >
-                  <Trash2 className="size-4" />
-                </button>
+                <div className="flex items-center gap-1">
+                  {canManage && (
+                    <button
+                      onClick={() => setEditing(p)}
+                      className="text-muted-foreground hover:text-foreground p-1"
+                      aria-label="Edit project"
+                      title="Edit project & members"
+                    >
+                      <Pencil className="size-4" />
+                    </button>
+                  )}
+                  {user?.role === "admin" && (
+                    <button
+                      onClick={() => onDelete(p.id)}
+                      className="text-muted-foreground hover:text-destructive p-1"
+                      aria-label="Delete project"
+                      title="Delete (admin only)"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div>
