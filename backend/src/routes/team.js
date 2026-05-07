@@ -1,6 +1,8 @@
 const express = require("express");
+const { z } = require("zod");
 const { supabase } = require("../db");
-const { requireAuth } = require("../middleware/auth");
+const { requireAuth, requireRole } = require("../middleware/auth");
+const { logActivity } = require("../lib/activity");
 
 const router = express.Router();
 router.use(requireAuth);
@@ -28,6 +30,34 @@ router.get("/", async (_req, res) => {
     };
   });
   res.json({ members: enriched });
+});
+
+// PATCH /api/team/:id/role — admin only, change a member's role
+const roleSchema = z.object({ role: z.enum(["admin", "member"]) });
+router.patch("/:id/role", requireRole("admin"), async (req, res) => {
+  const parsed = roleSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: "Invalid role" });
+  if (req.params.id === req.user.id) {
+    return res.status(400).json({ error: "You cannot change your own role" });
+  }
+
+  const sb = supabase();
+  const { data, error } = await sb
+    .from("profiles")
+    .update({ role: parsed.data.role, updated_at: new Date().toISOString() })
+    .eq("id", req.params.id)
+    .select("id,name,email,role,avatar_url,created_at")
+    .single();
+  if (error || !data) return res.status(500).json({ error: error?.message || "Not found" });
+
+  logActivity({
+    actorId: req.user.id,
+    verb: "updated",
+    targetType: "user",
+    targetId: data.id,
+    message: `set ${data.name}'s role to ${data.role}`,
+  });
+  res.json({ member: data });
 });
 
 module.exports = router;
