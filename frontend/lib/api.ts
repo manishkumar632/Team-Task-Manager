@@ -124,6 +124,11 @@ export const api = {
   // Team
   listTeam: () =>
     apiFetch<{ members: TeamMember[] }>("/api/team").then((r) => r.members),
+  updateMemberRole: (id: string, role: "admin" | "member") =>
+    apiFetch<{ member: TeamMember }>(`/api/team/${id}/role`, {
+      method: "PATCH",
+      body: JSON.stringify({ role }),
+    }).then((r) => r.member),
 
   // Activity
   listActivity: (limit = 50) =>
