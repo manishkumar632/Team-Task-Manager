@@ -27,28 +27,24 @@ type AuthContextValue = {
   loading: boolean;
   signup: (input: { name: string; email: string; password: string }) => Promise<void>;
   login: (input: { email: string; password: string }) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   refresh: () => Promise<void>;
   updateProfile: (patch: ProfileUpdate) => Promise<AuthUser>;
 };
 
-const TOKEN_KEY = "lumen.auth.token";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(TOKEN_KEY);
-}
-
+/**
+ * Same-origin fetch helper. The browser only ever talks to /api/* on the
+ * Next.js server, which proxies to the real backend with an HttpOnly cookie.
+ * No tokens are stored in localStorage; nothing the page reads is auth-bearing.
+ */
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const token = getToken();
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(path, {
     ...init,
+    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init.headers,
     },
   });
@@ -64,16 +60,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const fetchMe = useCallback(async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
-      setUser(null);
-      return;
-    }
     try {
       const { user } = await apiFetch<{ user: AuthUser }>("/api/auth/me");
       setUser(user);
     } catch {
-      localStorage.removeItem(TOKEN_KEY);
       setUser(null);
     }
   }, []);
@@ -83,27 +73,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchMe]);
 
   const signup = useCallback<AuthContextValue["signup"]>(async (input) => {
-    const { token, user } = await apiFetch<{ token: string; user: AuthUser }>(
+    const { user } = await apiFetch<{ user: AuthUser }>(
       "/api/auth/signup",
       { method: "POST", body: JSON.stringify(input) }
     );
-    localStorage.setItem(TOKEN_KEY, token);
     setUser(user);
     router.push("/");
   }, [router]);
 
   const login = useCallback<AuthContextValue["login"]>(async (input) => {
-    const { token, user } = await apiFetch<{ token: string; user: AuthUser }>(
+    const { user } = await apiFetch<{ user: AuthUser }>(
       "/api/auth/login",
       { method: "POST", body: JSON.stringify(input) }
     );
-    localStorage.setItem(TOKEN_KEY, token);
     setUser(user);
     router.push("/");
   }, [router]);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
+  const logout = useCallback(async () => {
+    try {
+      await apiFetch<{ ok: true }>("/api/auth/logout", { method: "POST" });
+    } catch {
+      /* even if it fails, clear local state */
+    }
     setUser(null);
     router.push("/login");
   }, [router]);
