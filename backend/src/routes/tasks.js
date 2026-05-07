@@ -68,12 +68,28 @@ router.post("/", async (req, res) => {
   res.status(201).json({ task: data });
 });
 
+// Helper: who can mutate a task — creator, current assignee, or admin
+async function canMutateTask(sb, user, taskId) {
+  if (user.role === "admin") return true;
+  const { data } = await sb
+    .from("tasks")
+    .select("creator_id, assignee_id")
+    .eq("id", taskId)
+    .maybeSingle();
+  if (!data) return false;
+  return data.creator_id === user.id || data.assignee_id === user.id;
+}
+
 // PATCH /api/tasks/:id
 router.patch("/:id", async (req, res) => {
   const parsed = updateSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.issues[0]?.message });
 
   const sb = supabase();
+  if (!(await canMutateTask(sb, req.user, req.params.id))) {
+    return res.status(403).json({ error: "Only the task creator, assignee, or an admin can edit this task" });
+  }
+
   const patch = { ...parsed.data, updated_at: new Date().toISOString() };
   if (parsed.data.status === "done") patch.completed_at = new Date().toISOString();
   if (parsed.data.status && parsed.data.status !== "done") patch.completed_at = null;
@@ -107,9 +123,12 @@ router.patch("/:id", async (req, res) => {
   res.json({ task: data });
 });
 
-// DELETE /api/tasks/:id
+// DELETE /api/tasks/:id — creator or admin
 router.delete("/:id", async (req, res) => {
   const sb = supabase();
+  if (!(await canMutateTask(sb, req.user, req.params.id))) {
+    return res.status(403).json({ error: "Only the task creator or an admin can delete this task" });
+  }
   const { error } = await sb.from("tasks").delete().eq("id", req.params.id);
   if (error) return res.status(500).json({ error: error.message });
   res.status(204).end();
