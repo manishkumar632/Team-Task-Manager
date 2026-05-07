@@ -192,16 +192,25 @@ export default function Home() {
             </button>
           </div>
           <div className="flex items-center gap-3 px-2 pt-2 border-t border-border/60">
-            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)]">
-              VA
+            <div className="size-9 rounded-full bg-[oklch(0.88_0.06_285)] grid place-items-center text-xs font-semibold text-[oklch(0.35_0.15_285)] overflow-hidden">
+              {user.avatar_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatar_url} alt={displayName} className="size-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Manish Mukhiya</p>
-              <p className="text-[11px] text-muted-foreground">
-                Admin · Premium
+              <p className="text-sm font-medium truncate">{displayName}</p>
+              <p className="text-[11px] text-muted-foreground truncate">
+                {roleLabel} · {user.email}
               </p>
             </div>
-            <button className="text-muted-foreground hover:text-foreground">
+            <button
+              onClick={logout}
+              aria-label="Log out"
+              className="text-muted-foreground hover:text-foreground"
+            >
               <LogOut className="size-4" />
             </button>
           </div>
