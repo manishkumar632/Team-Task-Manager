@@ -9,9 +9,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const BACKEND_URL =
-  process.env.BACKEND_API_URL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:4000";
+  process.env.BACKEND_API_URL
 
 const AUTH_COOKIE = "lumen_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
