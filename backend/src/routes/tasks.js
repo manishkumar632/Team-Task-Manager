@@ -1,7 +1,7 @@
 const express = require("express");
 const { z } = require("zod");
 const { supabase } = require("../db");
-const { requireAuth } = require("../middleware/auth");
+const { requireAuth, requireRole } = require("../middleware/auth");
 const { logActivity } = require("../lib/activity");
 
 const router = express.Router();
