@@ -1,18 +1,20 @@
 const { createClient } = require("@supabase/supabase-js");
 
-const url = process.env.SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+let _client = null;
 
-if (!url || !serviceKey) {
-  console.warn(
-    "[db] Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY env vars. " +
-      "Auth endpoints will fail until these are set."
-  );
+function supabase() {
+  if (_client) return _client;
+  const url = process.env.SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) {
+    throw new Error(
+      "Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in backend/.env"
+    );
+  }
+  _client = createClient(url, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  return _client;
 }
-
-// Service-role client. Backend-only. Bypasses RLS — never import from frontend.
-const supabase = createClient(url || "", serviceKey || "", {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
 
 module.exports = { supabase };
