@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/page-header";
 import { api, type Project, type Task, type TeamMember } from "@/lib/api";
 import { formatDateTime, isOverdue, priorityBadge, statusBadge } from "@/lib/format";
 import { useAuth } from "@/lib/auth-context";
+import { Select } from "@/components/ui/select";
 
 const STATUSES: Task["status"][] = ["todo", "in_progress", "done"];
 
@@ -129,13 +130,14 @@ export default function TasksPage() {
                       <span className="text-[11px] text-muted-foreground truncate">
                         {t.project?.name ?? "—"} · {t.assignee?.name ?? "Unassigned"}
                       </span>
-                      <select
+                      <Select
+                        size="sm"
+                        className="w-32"
+                        ariaLabel="Change status"
                         value={t.status}
-                        onChange={(e) => move(t, e.target.value as Task["status"])}
-                        className="text-[11px] bg-transparent border border-border/60 rounded px-1.5 py-0.5"
-                      >
-                        {STATUSES.map((s) => <option key={s} value={s}>{statusBadge(s).label}</option>)}
-                      </select>
+                        onChange={(v) => move(t, v as Task["status"])}
+                        options={STATUSES.map((s) => ({ value: s, label: statusBadge(s).label }))}
+                      />
                     </div>
                     <p className="text-[11px] text-muted-foreground truncate">
                       Assigned by: <span className="font-medium text-foreground">
@@ -225,10 +227,15 @@ function NewTaskModal({
         </label>
         <div className="grid grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Priority</span>
-            <select value={priority} onChange={(e) => setPriority(e.target.value as Task["priority"])}
-              className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm">
-              <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option>
-            </select>
+            <Select
+              value={priority}
+              onChange={(v) => setPriority(v as Task["priority"])}
+              options={[
+                { value: "low", label: "Low" },
+                { value: "medium", label: "Medium" },
+                { value: "high", label: "High" },
+              ]}
+            />
           </label>
           <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Due</span>
             <input type="datetime-local" value={due} onChange={(e) => setDue(e.target.value)}
@@ -236,18 +243,26 @@ function NewTaskModal({
           </label>
         </div>
         <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Project <span className="text-muted-foreground">(for progress tracking)</span></span>
-          <select value={projectId} onChange={(e) => setProjectId(e.target.value)}
-            className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm">
-            <option value="">— No project (won&apos;t count toward any progress) —</option>
-            {projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
+          <Select
+            value={projectId}
+            onChange={setProjectId}
+            placeholder="No project"
+            options={[
+              { value: "", label: "— No project —", hint: "Won't count toward any progress" },
+              ...projects.map((p) => ({ value: p.id, label: p.name })),
+            ]}
+          />
         </label>
         <label className="flex flex-col gap-1.5"><span className="text-xs font-medium">Assignee <span className="text-muted-foreground">(determines whose &ldquo;My Tasks&rdquo; it appears in)</span></span>
-          <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)}
-            className="h-11 px-4 rounded-xl bg-background border border-border/60 text-sm">
-            <option value="">— Unassigned (only shows in &ldquo;All&rdquo;) —</option>
-            {team.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-          </select>
+          <Select
+            value={assigneeId}
+            onChange={setAssigneeId}
+            placeholder="Unassigned"
+            options={[
+              { value: "", label: "— Unassigned —", hint: "Only shows in \"All\"" },
+              ...team.map((m) => ({ value: m.id, label: m.name })),
+            ]}
+          />
         </label>
         {err && <p className="text-xs text-destructive">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">

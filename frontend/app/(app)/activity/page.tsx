@@ -5,6 +5,7 @@ import { Search, Loader2, RefreshCw } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { api, type Activity } from "@/lib/api";
 import { memberInitials, relativeTime } from "@/lib/format";
+import { Select } from "@/components/ui/select";
 
 const PAGE_SIZE = 25;
 const VERBS: { value: string; label: string }[] = [
@@ -137,15 +138,14 @@ export default function ActivityPage() {
             className="w-full h-11 pl-10 pr-4 rounded-full bg-card border border-border/60 text-sm outline-none focus:border-ring"
           />
         </div>
-        <select
+        <Select
+          className="sm:w-48"
+          variant="pill"
           value={verb}
-          onChange={(e) => setVerb(e.target.value)}
-          className="h-11 px-4 rounded-full bg-card border border-border/60 text-sm outline-none focus:border-ring"
-        >
-          {VERBS.map((v) => (
-            <option key={v.value} value={v.value}>{v.label}</option>
-          ))}
-        </select>
+          onChange={setVerb}
+          options={VERBS}
+          ariaLabel="Filter by action"
+        />
       </div>
 
       {error && (
